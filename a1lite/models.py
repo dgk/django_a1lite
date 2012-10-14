@@ -27,7 +27,8 @@ class Payment(models.Model):
     status = models.PositiveSmallIntegerField(verbose_name=_('Status'),
         choices=STATUS_CHOICES, default=STATUS_PAY_WAITING)
 
-    cost = models.PositiveIntegerField(verbose_name=_('Cost'))
+    cost = models.DecimalField(max_digits=12, decimal_places=2,
+        verbose_name=_('Cost'))
 
     default_email = models.EmailField(verbose_name=_('Email'),
         null=True, blank=True)
@@ -47,9 +48,11 @@ class Payment(models.Model):
     payment_type = models.ForeignKey('PaymentType', verbose_name=_('Payment type'),
         null=True, blank=True)
 
-    partner_income = models.PositiveIntegerField(verbose_name=_('Partner income'),
+    partner_income = models.DecimalField(max_digits=12, decimal_places=2,
+        verbose_name=_('Partner income'),
         null=True, blank=True)
-    system_income = models.PositiveIntegerField(verbose_name=_('System income'),
+    system_income = models.DecimalField(max_digits=12, decimal_places=2,
+        verbose_name=_('System income'),
         null=True, blank=True)
 
     created = models.DateTimeField(verbose_name=_('Created'), auto_now_add=True)
