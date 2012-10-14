@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 
 import a1lite_settings
 
+from .signals import payment_processed
+
 class Payment(models.Model):
 
     STATUS_PAY_WAITING = 1
@@ -109,8 +111,11 @@ class Payment(models.Model):
             if k in ('type', 'order_id', 'test', ):
                 continue
             setattr(self, k, params[k])
+
         self.payment_type = PaymentType.objects.get(code=params['type'])
         self.save()
+
+        payment_processed.send(self)
 
 class PaymentType(models.Model):
     code = models.CharField(max_length=32)
