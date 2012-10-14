@@ -23,8 +23,9 @@ setup(
     package_data={PACKAGE: [
         'fixtures/*.json',
         'templates/*/*.html',
-        'locale/*/django.*',
+        'locale/*/*/django.*',
         'migrations/*.py',
+        'templatetags/*.py',
     ]},
 
     classifiers=[
