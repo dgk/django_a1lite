@@ -101,7 +101,7 @@ class Payment(models.Model):
             raise Payment.InvalidSignature()
 
         if float(params['partner_income']) < self.cost:
-            self.status = Payment.STATUS_PAY_WAITING
+            self.status = Payment.STATUS_PARTIALLY_PAID
         else:
             self.status = Payment.STATUS_PAYED
 
