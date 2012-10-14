@@ -39,7 +39,8 @@ class Payment(models.Model):
         help_text=_('Payment comment'),
         max_length=512, null=True, blank=True)
 
-    tid = models.PositiveIntegerField(verbose_name=_('Transaction ID'),
+    tid = models.CharField(verbose_name=_('Transaction ID'),
+        max_length=32,
         null=True, blank=True)
     payment_type = models.ForeignKey('PaymentType', verbose_name=_('Payment type'),
         null=True, blank=True)
