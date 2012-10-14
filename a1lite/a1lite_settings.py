@@ -3,7 +3,7 @@
 import sys
 from django.conf import settings
 
-def __settings_value(name, default):
+def __settings_value(name, default=None):
     setattr(sys.modules[__name__], name, getattr(settings, name, default))
 
 __settings_value('A1LITE_IPS', (
@@ -14,5 +14,6 @@ __settings_value('A1LITE_IPS', (
 ))
 
 __settings_value('A1LITE_PAYMENT_TYPE_LOGO_UPLOAD_TO', 'a1lite_logo')
-__settings_value('A1LITE_SECRET', None)
-__settings_value('A1LITE_KEY', None)
+__settings_value('A1LITE_SECRET')
+__settings_value('A1LITE_KEY')
+__settings_value('A1LITE_SERVICE_ID')

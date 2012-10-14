@@ -1,0 +1,10 @@
+<form method="POST" accept-charset="UTF-8"
+      action="https://partner.a1pay.ru/a1lite/input/">
+    <input type="hidden" name="key" value="{{ a1lite_key }}" />
+    <input type="hidden" name="cost" value="{{ payment.cost }}" />
+    <input type="hidden" name="name" value="{{ payment.name }}" />
+    <input type="hidden" name="default_email" value="{{ payment.default_email }}" />
+    <input type="hidden" name="phone_number" value="{{ payment.phone_number }}" />
+    <input type="hidden" name="order_id" value="{{ payment.id }}" />
+    {% include 'a1lite/a1lite_form_button.html' %}
+</form>
