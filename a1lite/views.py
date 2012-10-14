@@ -6,10 +6,12 @@ from django.http import (
     HttpResponseNotAllowed,
     HttpResponseBadRequest,
 )
-
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Payment, PaymentType
+from .signals import success_page_visited, error_page_visited
 
 import a1lite_settings
 
@@ -34,11 +36,14 @@ def process(request):
     return HttpResponse('OK')
 
 def success(request):
-    pass
+    success_page_visited.send(None, request=request)
+    return render_to_response('a1lite/success.html',
+        context_instance=RequestContext(request))
 
 def error(request):
-    pass
-
+    error_page_visited.send(None, request=request)
+    return render_to_response('a1lite/error.html',
+        context_instance=RequestContext(request))
 
 
 def _check_ip(request):
