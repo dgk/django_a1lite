@@ -14,3 +14,5 @@ __settings_value('A1LITE_IPS', (
 ))
 
 __settings_value('A1LITE_PAYMENT_TYPE_LOGO_UPLOAD_TO', 'a1lite_logo')
+__settings_value('A1LITE_SECRET', None)
+__settings_value('A1LITE_KEY', None)

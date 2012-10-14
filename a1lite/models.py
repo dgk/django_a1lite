@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import hashlib
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -57,6 +59,9 @@ class Payment(models.Model):
         verbose_name=_('Payment')
         verbose_name_plural=_('Payments')
 
+    class InvalidSignature(Exception):
+        pass
+
     def __unicode__(self):
         return '%d (%d) / %s' % (self.id, self.cost, unicode(self.status_verbose))
 
@@ -67,6 +72,42 @@ class Payment(models.Model):
 
     def is_payed(self):
         return self.status == self.STATUS_PAYED
+
+    def process(self, data_dict):
+        keys = [
+                'tid',
+                'name',
+                'comment',
+                'partner_id',
+                'service_id',
+                'order_id',
+                'type',
+                'partner_income',
+                'system_income'
+            ]
+
+        if 'test' in data_dict:
+            keys.append('test')
+
+        params = dict([(x, data_dict.get(x, '')) for x in keys ])
+
+        check = hashlib.md5((''.join([params[x] for x in keys ])
+                             + a1lite_settings.A1LITE_SECRET).encode('utf8')).hexdigest()
+
+        if check != data_dict.get('check'):
+            raise Payment.InvalidSignature()
+
+        if float(params['partner_income']) < self.cost:
+            self.status = Payment.STATUS_PAY_WAITING
+        else:
+            self.status = Payment.STATUS_PAYED
+
+        for k in keys:
+            if k in ('type', 'order_id', 'test', ):
+                continue
+            setattr(self, k, params[k])
+        self.payment_type = PaymentType.objects.get(code=params['type'])
+        self.save()
 
 class PaymentType(models.Model):
     code = models.CharField(max_length=32)
