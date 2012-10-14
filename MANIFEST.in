@@ -1,0 +1,4 @@
+global-include *.py
+recursive-include a1lite/templates *.html
+recursive-include a1lite/locale *.po *.mo
+recursive-include a1lite/fixtures *.json
