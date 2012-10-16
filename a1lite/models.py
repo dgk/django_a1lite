@@ -102,7 +102,7 @@ class Payment(models.Model):
         if check != data_dict.get('check'):
             raise Payment.InvalidSignature()
 
-        if float(params['partner_income']) < self.cost:
+        if float(params['system_income']) < self.cost:
             self.status = Payment.STATUS_PARTIALLY_PAID
         else:
             self.status = Payment.STATUS_PAYED
